@@ -26,6 +26,24 @@ const templateTexts = [
 "CBT Teacher",
 "Lunch Service"
 ];
+
+// Helper Functions
+
+/**
+ * Gets the value from the column name.
+ * 
+ * @param {string} name The column name
+ * @param {string []} row The array of values
+ * @param {string []} ColumnNames The array of column names
+ * @returns {string} The value from the column name
+ */
+export const getValueFromColumnName = (name, row, ColumnNames) => {
+  const index = ColumnNames.indexOf(name);
+  if (index !== -1) {
+      return row[index];
+  }
+  return undefined;
+};
   
 const createServingReminder = () => {
   const data = oifSchedule.getDataRange().getValues();
@@ -54,7 +72,6 @@ const createServingReminder = () => {
 
   // Replace template text with the data in OIF Schedule
   templateTexts.forEach(text => {
-    const templateString = "{" + text + "}";
-    body.replaceText(templateString, dataMap[text]);
+    body.replaceText(`{text}`, dataMap[text]);
   });
 }
