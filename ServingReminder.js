@@ -22,7 +22,8 @@ const templateTexts = [
 "Welcome Team",
 "Bulletin",
 "CBT Teacher",
-"Lunch Service"
+"Lunch Service",
+"Communion"
 ];
 
 // Helper Functions
@@ -61,6 +62,12 @@ const createServingReminder = () => {
     // Parentheses are problematic with replacing text in the template
     name = name.replace(/[()]/g, '');
     acc[name] = currentRow[index];
+  
+  // Check if there is Communion
+  if (name === "Topic") {
+     const isMatched = currentRow[index].match(/(c|C)ommunion/g);
+    if (isMatched) acc.Communion = "yes";
+  }
     return acc;
   }, {});
 
