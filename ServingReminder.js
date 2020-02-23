@@ -70,6 +70,6 @@ const createServingReminder = () => {
 
   // Replace template text with the data in OIF Schedule
   templateTexts.forEach(text => {
-    body.replaceText(`{text}`, dataMap[text]);
+    body.replaceText(`{${text}}`, dataMap[text]);
   });
 }
