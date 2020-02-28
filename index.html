@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top" />
+    <title>Sunday Serving Reminder Generator</title>
+    <script>
+      function deleteTemplate(id, button) {
+        button.remove();
+        var deleteStatusNode = document.getElementById('delete-status');
+        deleteStatusNode.appendChild(document.createTextNode("Template Deleted!"));
+      }
+    </script>
+  </head>
+  <body>
+    <p>Sunday Serving Reminder Created!</p>
+    <a href="<?= reminderUrl ?>" target="_blank"
+      >Link to Sunday Serving Reminder Google Doc</a
+    >
+    <hr>
+    When you are done creating the email, click this button to delete the
+    template:
+    <br>
+    <button onclick="google.script.run
+      .withSuccessHandler(deleteTemplate)
+      .withUserObject(this)
+      .deleteFileById(<?= reminderId ?>)">
+      Delete Template
+    </button>
+    <p id="delete-status"></p>
+
+    <p>If you want to create a new template, refresh this page.</p>
+  </body>
+</html>

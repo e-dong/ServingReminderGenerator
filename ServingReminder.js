@@ -43,7 +43,7 @@ const createServingReminder = () => {
     )[0]
     .map(row => row);
 
-  const dataMap = columnNames.reduce((acc, name, index) => {
+  return columnNames.reduce((acc, name, index) => {
     // Parentheses are problematic with replacing text in the template
     name = name.replace(/[()]/g, "");
     acc[name] = currentRow[index];
@@ -52,13 +52,11 @@ const createServingReminder = () => {
     if (checkCommunion(name, currentRow[index])) acc.Communion = "yes";
     return acc;
   }, {});
-
-  buildGoogleDocsFromTemplate(dataMap);
 };
 
 // Helper Functions
 
-const buildGoogleDocsFromTemplate = dataMap => {
+const buildGoogleDocFromTemplate = dataMap => {
   // Create a copy of the google doc template
   const templateCopy = DriveApp.getFileById(googleDocTemplateId).makeCopy();
   const document = DocumentApp.openById(templateCopy.getId());
@@ -73,7 +71,7 @@ const buildGoogleDocsFromTemplate = dataMap => {
 
   document.saveAndClose();
 
-  return document.getId();
+  return document;
 };
 
 /**
@@ -104,3 +102,16 @@ const getValueFromColumnName = (name, row, ColumnNames) => {
   }
   return undefined;
 };
+
+const deleteFileById = id => {
+  Drive.Files.remove(id);
+};
+
+function doGet(e) {
+  const output = HtmlService.createTemplateFromFile("index");
+  const data = createServingReminder();
+  const document = buildGoogleDocFromTemplate(data);
+  output.reminderUrl = document.getUrl();
+  output.reminderId = document.getId();
+  return output.evaluate();
+}
